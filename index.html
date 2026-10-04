@@ -3,21 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OS - BETHEC Empilhadeiras</title>
+<title>OS - BETHEC</title>
 <link rel="stylesheet" href="style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+.folha{font-size:13px}
+h3{padding:6px;font-size:13px}
+table{margin-bottom:8px}
+table input{padding:6px;min-height:32px;font-size:14px}
+.box{padding:8px;gap:8px}
+#sigCanvas{width:100%;height:140px;border:2px solid #000;background:#fff;touch-action:none;border-radius:4px}
+.foto-btns{display:flex;gap:8px;justify-content:center;margin:8px 0}
+.foto-btns label{background:#007bff;color:#fff;padding:12px 16px;border-radius:6px;cursor:pointer;font-size:15px;font-weight:bold}
+.foto-btns label.galeria{background:#555}
+.foto-btns input{display:none}
+</style>
 </head>
 <body>
 <div class="folha" id="folha">
-
 <div class="topo">
-<img src="logo.png" alt="BETHEC EMPILHADEIRAS">
-<div class="info">
-BETHEC Peças e assistência técnica para empilhadeiras<br>
-EMAIL: bethecemp@outlook.com<br>
-CNPJ: 65.940.241/0001-66<br>
-Telefone: 15 99129-6558 - Sorocaba/SP
-</div>
+<img src="logo.png" alt="BETHEC">
+<div class="info">BETHEC Peças e assistência técnica para empilhadeiras<br>EMAIL: bethecemp@outlook.com<br>CNPJ: 65.940.241/0001-66<br>Tel: 15 99129-6558 - Sorocaba/SP</div>
 </div>
 
 <div class="box">
@@ -31,12 +37,7 @@ Telefone: 15 99129-6558 - Sorocaba/SP
 <div>Chassis:<br><input type="text"></div>
 <div>Frota:<br><input type="text"></div>
 <div>Nº OS:<br><input type="text" id="numOS"></div>
-<div class="tipos">
-<strong>Tipo:</strong>
-<label><input type="radio" name="tipo"> Corretiva</label>
-<label><input type="radio" name="tipo"> Preventiva</label>
-<label><input type="checkbox"> Orçamento</label>
-</div>
+<div class="tipos"><strong>Tipo:</strong><label><input type="radio" name="tipo"> Corretiva</label><label><input type="radio" name="tipo"> Preventiva</label><label><input type="checkbox"> Orçamento</label></div>
 </div>
 
 <h3>Peças aplicadas</h3>
@@ -56,56 +57,92 @@ Telefone: 15 99129-6558 - Sorocaba/SP
 
 <h3>Descrição da mão de obra</h3>
 <table>
-<tr><td><textarea rows="2" placeholder="Descreva o serviço..."></textarea></td></tr>
-<tr><td><textarea rows="2"></textarea></td></tr>
-<tr><td><textarea rows="2"></textarea></td></tr>
-<tr><td><textarea rows="2"></textarea></td></tr>
-<tr><td><textarea rows="2"></textarea></td></tr>
-<tr><td><textarea rows="2"></textarea></td></tr>
-<tr><td><textarea rows="2"></textarea></td></tr>
-<tr><td><textarea rows="2"></textarea></td></tr>
+<tr><td><textarea rows="1"></textarea></td></tr>
+<tr><td><textarea rows="1"></textarea></td></tr>
+<tr><td><textarea rows="1"></textarea></td></tr>
+<tr><td><textarea rows="1"></textarea></td></tr>
+<tr><td><textarea rows="1"></textarea></td></tr>
+<tr><td><textarea rows="1"></textarea></td></tr>
 </table>
 
 <div class="no-print fotos">
-<div class="foto"><strong>📸 FOTO ANTES</strong><br><br><input type="file" id="fAntes" accept="image/*" capture="environment"><br><img id="pAntes"></div>
-<div class="foto"><strong>📸 FOTO DEPOIS</strong><br><br><input type="file" id="fDepois" accept="image/*" capture="environment"><br><img id="pDepois"></div>
+<div class="foto"><strong>📸 FOTO ANTES</strong>
+<div class="foto-btns">
+<label>📷 Câmera<input type="file" id="fAntesCam" accept="image/*" capture="environment"></label>
+<label class="galeria">📎 Galeria<input type="file" id="fAntesGal" accept="image/*"></label>
+</div><img id="pAntes"></div>
+<div class="foto"><strong>📸 FOTO DEPOIS</strong>
+<div class="foto-btns">
+<label>📷 Câmera<input type="file" id="fDepoisCam" accept="image/*" capture="environment"></label>
+<label class="galeria">📎 Galeria<input type="file" id="fDepoisGal" accept="image/*"></label>
+</div><img id="pDepois"></div>
 </div>
 
 <div class="rodape">
-<div class="q"><b>HORÁRIOS</b><br>Chegada: <input type="time"><br>Saída: <input type="time"><br>Deslocamento: <input type="text"><br>Qtd Hrs: <input type="number"></div>
-<div class="q"><b>TÉCNICO</b><br><input type="text" placeholder="Nome do técnico"><br><br>Assinatura: ___________________________</div>
-<div class="q"><b>STATUS</b><br><label><input type="checkbox"> LIBERADO</label><br><label><input type="checkbox"> PARADO</label></div>
+<div class="q"><b>HORÁRIOS</b><br>Chegada: <input type="time"><br>Saída: <input type="time"><br>Desloc.: <input type="text"><br>Hrs: <input type="number"></div>
+<div class="q"><b>ASSINATURA RESPONSÁVEL</b><br>
+<canvas id="sigCanvas"></canvas><br>
+<button type="button" class="no-print" onclick="limparAssinatura()" style="margin-top:6px">Limpar assinatura</button>
+</div>
+<div class="q"><b>STATUS</b><br><label><input type="checkbox"> LIBERADO</label><br><label><input type="checkbox"> PARADO</label><br><br>Técnico:<input type="text"></div>
 </div>
 
 <div class="no-print" id="botoes">
 <button class="btn" onclick="window.print()">🖨️ Imprimir</button>
-<button class="btn black" onclick="gerarPDF()">📄 Gerar PDF</button>
+<button class="btn black" onclick="gerarPDF()">📄 Gerar PDF (1 página)</button>
 </div>
-
 </div>
 
 <script>
-function bind(i,p){
-  document.getElementById(i).addEventListener('change',function(){
+// Fotos: câmera + galeria
+function bindFoto(inputId, imgId){
+  document.getElementById(inputId).addEventListener('change', function(){
     const f=this.files[0]; if(!f) return;
     const r=new FileReader();
-    r.onload=e=>{const im=document.getElementById(p); im.src=e.target.result; im.style.display='block';};
+    r.onload=e=>{const im=document.getElementById(imgId); im.src=e.target.result; im.style.display='block';};
     r.readAsDataURL(f);
   });
 }
-bind('fAntes','pAntes');
-bind('fDepois','pDepois');
+bindFoto('fAntesCam','pAntes'); bindFoto('fAntesGal','pAntes');
+bindFoto('fDepoisCam','pDepois'); bindFoto('fDepoisGal','pDepois');
 
+// Assinatura desenhável (mouse + touch)
+const canvas=document.getElementById('sigCanvas');
+const ctx=canvas.getContext('2d');
+function resizeCanvas(){
+  const rect=canvas.getBoundingClientRect();
+  canvas.width=rect.width; canvas.height=140;
+  ctx.lineWidth=2; ctx.lineCap='round'; ctx.strokeStyle='#000';
+}
+window.addEventListener('load', resizeCanvas);
+window.addEventListener('resize', resizeCanvas);
+let desenhando=false;
+function pos(e){
+  const r=canvas.getBoundingClientRect();
+  const t=e.touches?e.touches[0]:e;
+  return {x:t.clientX-r.left, y:t.clientY-r.top};
+}
+canvas.addEventListener('mousedown', e=>{desenhando=true; ctx.beginPath(); const p=pos(e); ctx.moveTo(p.x,p.y);});
+canvas.addEventListener('mousemove', e=>{if(!desenhando) return; const p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke();});
+canvas.addEventListener('mouseup', ()=>desenhando=false);
+canvas.addEventListener('touchstart', e=>{e.preventDefault(); desenhando=true; ctx.beginPath(); const p=pos(e); ctx.moveTo(p.x,p.y);},{passive:false});
+canvas.addEventListener('touchmove', e=>{e.preventDefault(); if(!desenhando) return; const p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke();},{passive:false});
+canvas.addEventListener('touchend', ()=>desenhando=false);
+function limparAssinatura(){ctx.clearRect(0,0,canvas.width,canvas.height);}
+
+// PDF em 1 página
 function gerarPDF(){
   const b=document.getElementById('botoes');
   b.style.display='none';
-  html2pdf().set({
-    margin:5,
+  const opt={
+    margin:[5,5,5,5],
     filename:'OS-BETHEC-'+(document.getElementById('numOS').value||Date.now())+'.pdf',
-    image:{type:'jpeg',quality:0.95},
-    html2canvas:{scale:2,useCORS:true},
-    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
-  }).from(document.getElementById('folha')).save().then(()=>b.style.display='flex');
+    image:{type:'jpeg',quality:0.92},
+    html2canvas:{scale:1.5,useCORS:true},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+    pagebreak:{mode:['avoid-all']}
+  };
+  html2pdf().set(opt).from(document.getElementById('folha')).save().then(()=>{b.style.display='flex';});
 }
 document.getElementById('numOS').value=Math.floor(Math.random()*9000+1000);
 </script>
