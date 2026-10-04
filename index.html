@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OS - BETHEC Empilhadeiras</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+<div class="folha" id="folha">
+
+<div class="topo">
+<img src="logo.png" alt="BETHEC EMPILHADEIRAS">
+<div class="info">
+BETHEC Peças e assistência técnica para empilhadeiras<br>
+EMAIL: bethecemp@outlook.com<br>
+CNPJ: 65.940.241/0001-66<br>
+Telefone: 15 99129-6558 - Sorocaba/SP
+</div>
+</div>
+
+<div class="box">
+<div>Empresa:<br><input type="text"></div>
+<div>Data:<br><input type="date"></div>
+<div>Marca:<br><input type="text"></div>
+<div>Horímetro:<br><input type="number"></div>
+<div>Cidade:<br><input type="text"></div>
+<div>Modelo:<br><input type="text"></div>
+<div>Motor:<br><input type="text"></div>
+<div>Chassis:<br><input type="text"></div>
+<div>Frota:<br><input type="text"></div>
+<div>Nº OS:<br><input type="text" id="numOS"></div>
+<div class="tipos">
+<strong>Tipo:</strong>
+<label><input type="radio" name="tipo"> Corretiva</label>
+<label><input type="radio" name="tipo"> Preventiva</label>
+<label><input type="checkbox"> Orçamento</label>
+</div>
+</div>
+
+<h3>Peças aplicadas</h3>
+<table>
+<tr><th style="width:15%">Qntd</th><th style="width:25%">Código</th><th>Descrição</th></tr>
+<tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+<tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+<tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+<tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+<tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+<tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+<tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+<tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+<tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+<tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+</table>
+
+<h3>Descrição da mão de obra</h3>
+<table>
+<tr><td><textarea rows="2" placeholder="Descreva o serviço..."></textarea></td></tr>
+<tr><td><textarea rows="2"></textarea></td></tr>
+<tr><td><textarea rows="2"></textarea></td></tr>
+<tr><td><textarea rows="2"></textarea></td></tr>
+<tr><td><textarea rows="2"></textarea></td></tr>
+<tr><td><textarea rows="2"></textarea></td></tr>
+<tr><td><textarea rows="2"></textarea></td></tr>
+<tr><td><textarea rows="2"></textarea></td></tr>
+</table>
+
+<div class="no-print fotos">
+<div class="foto"><strong>📸 FOTO ANTES</strong><br><br><input type="file" id="fAntes" accept="image/*" capture="environment"><br><img id="pAntes"></div>
+<div class="foto"><strong>📸 FOTO DEPOIS</strong><br><br><input type="file" id="fDepois" accept="image/*" capture="environment"><br><img id="pDepois"></div>
+</div>
+
+<div class="rodape">
+<div class="q"><b>HORÁRIOS</b><br>Chegada: <input type="time"><br>Saída: <input type="time"><br>Deslocamento: <input type="text"><br>Qtd Hrs: <input type="number"></div>
+<div class="q"><b>TÉCNICO</b><br><input type="text" placeholder="Nome do técnico"><br><br>Assinatura: ___________________________</div>
+<div class="q"><b>STATUS</b><br><label><input type="checkbox"> LIBERADO</label><br><label><input type="checkbox"> PARADO</label></div>
+</div>
+
+<div class="no-print" id="botoes">
+<button class="btn" onclick="window.print()">🖨️ Imprimir</button>
+<button class="btn black" onclick="gerarPDF()">📄 Gerar PDF</button>
+</div>
+
+</div>
+
+<script>
+function bind(i,p){
+  document.getElementById(i).addEventListener('change',function(){
+    const f=this.files[0]; if(!f) return;
+    const r=new FileReader();
+    r.onload=e=>{const im=document.getElementById(p); im.src=e.target.result; im.style.display='block';};
+    r.readAsDataURL(f);
+  });
+}
+bind('fAntes','pAntes');
+bind('fDepois','pDepois');
+
+function gerarPDF(){
+  const b=document.getElementById('botoes');
+  b.style.display='none';
+  html2pdf().set({
+    margin:5,
+    filename:'OS-BETHEC-'+(document.getElementById('numOS').value||Date.now())+'.pdf',
+    image:{type:'jpeg',quality:0.95},
+    html2canvas:{scale:2,useCORS:true},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+  }).from(document.getElementById('folha')).save().then(()=>b.style.display='flex');
+}
+document.getElementById('numOS').value=Math.floor(Math.random()*9000+1000);
+</script>
+</body>
+</html>
